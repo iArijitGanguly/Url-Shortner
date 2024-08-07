@@ -2,32 +2,26 @@ import mongoose, { ConnectOptions } from 'mongoose';
 
 const db_uri = process.env.ATLAS_DB_URL as string;
 
-let instance: DBConnection | null = null;
-
 class DBConnection {
     private uri: string;
-    private isConnected: boolean;
-    // private static instance: DBConnection | null = null;
+    private isConnected: boolean = false;
+    private static instance: DBConnection | null = null;
 
     constructor(db_uri: string) {
-        if(instance) {
-            throw new Error('Only one connection can exist');
-        }
         this.uri = db_uri;
         this.isConnected = false;
-        instance = this;
     }
 
-    // public static getInstance(db_uri: string) {
-    //     if(!this.instance) {
-    //         this.instance = new DBConnection(db_uri);
-    //     }
-    //     else {
-    //         throw new Error('Only one connection can exist');
-    //     }
+    public static getInstance(db_uri: string) {
+        if(!this.instance) {
+            this.instance = new DBConnection(db_uri);
+        }
+        else {
+            throw new Error('Only one connection can exist');
+        }
 
-    //     return this.instance;
-    // }
+        return this.instance;
+    }
 
     async connect() {
         if(this.isConnected) {
@@ -50,6 +44,6 @@ class DBConnection {
     }
 }
 
-const db = Object.freeze(new DBConnection(db_uri));
+const db = DBConnection.getInstance(db_uri);
 
 export default db;
