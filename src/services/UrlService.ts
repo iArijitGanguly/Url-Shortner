@@ -22,7 +22,7 @@ class UrlService {
             url = await this.urlRepository.getUrlByShortUrl(shortUrl);
         }
 
-        return await this.urlRepository.createUrl(originalUrl, shortUrl);
+        return await this.urlRepository.createUrl(originalUrl, `urls/${shortUrl}`);
     }
 
     async getAllUrls() {

@@ -16,13 +16,3 @@ export async function POST(req: Request) {
         error: {}
     }, { status: StatusCodes.CREATED });
 }
-
-export async function GET() {
-    const response = await shortnerService.getAllUrls();
-    return NextResponse.json({
-        success: true,
-        message: 'Successfully fetched all the urls and their shorter version',
-        data: response,
-        error: {}
-    }, { status: StatusCodes.OK });
-}
